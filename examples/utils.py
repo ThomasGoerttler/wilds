@@ -273,12 +273,25 @@ def log_config(config, logger):
         logger.write(f'{name.replace("_"," ").capitalize()}: {val}\n')
     logger.write('\n')
 
+
 def initialize_wandb(config):
     if config.wandb_api_key_path is not None:
         with open(config.wandb_api_key_path, "r") as f:
             os.environ["WANDB_API_KEY"] = f.read().strip()
 
-    wandb.init(**config.wandb_kwargs)
+    # Create a custom run name
+    if config.algorithm == "SparseResidual":
+        run_name = f"{config.dataset}_{config.algorithm}_seed{config.seed}_alpha{config.recon_alpha}"
+    elif config.algorithm == "SparseReconstruction":
+        run_name = f"{config.dataset}_{config.algorithm}_seed{config.seed}_alpha{config.recon_alpha}_beta{config.sparse_alpha}"
+    else:
+        run_name = f"{config.dataset}_{config.algorithm}_seed{config.seed}"
+
+    wandb.init(
+        name=run_name,  # Set the run name
+        **config.wandb_kwargs
+    )
+
     wandb.config.update(config)
 
 def save_pred(y_pred, path_prefix):

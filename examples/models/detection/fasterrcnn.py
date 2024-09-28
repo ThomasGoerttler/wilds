@@ -24,7 +24,7 @@ from torch.nn import functional as F
 import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor, FasterRCNN
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
-from torchvision.models.utils import load_state_dict_from_url
+from torch.hub import load_state_dict_from_url
 from torchvision.ops import misc as misc_nn_ops
 from torchvision.ops import MultiScaleRoIAlign
 from torchvision.models.detection.anchor_utils import AnchorGenerator

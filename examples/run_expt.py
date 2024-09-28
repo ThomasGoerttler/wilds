@@ -106,6 +106,8 @@ def main():
     parser.add_argument('--dann_featurizer_lr', type=float)
     parser.add_argument('--dann_discriminator_lr', type=float)
     parser.add_argument('--afn_penalty_weight', type=float)
+    parser.add_argument('--recon_alpha', type=float)
+    parser.add_argument('--sparse_alpha', type=float)
     parser.add_argument('--safn_delta_r', type=float)
     parser.add_argument('--hafn_r', type=float)
     parser.add_argument('--use_hafn', default=False, type=parse_bool, const=True, nargs='?')

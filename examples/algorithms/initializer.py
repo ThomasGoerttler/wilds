@@ -11,6 +11,7 @@ from algorithms.IRM import IRM
 from algorithms.fixmatch import FixMatch
 from algorithms.pseudolabel import PseudoLabel
 from algorithms.noisy_student import NoisyStudent
+from algorithms.SparseAutoencoder import SparseAutoencoder
 from configs.supported import algo_log_metrics, losses
 from losses import initialize_loss
 
@@ -32,6 +33,15 @@ def initialize_algorithm(config, datasets, train_grouper, unlabeled_dataset=None
             loss=loss,
             metric=metric,
             n_train_steps=n_train_steps)
+    elif config.algorithm in ['SparseResidual', 'SparseReconstruction']:
+        algorithm = SparseAutoencoder(
+            config=config,
+            d_out=d_out,
+            grouper=train_grouper,
+            loss=loss,
+            metric=metric,
+            n_train_steps=n_train_steps)
+
     elif config.algorithm == 'groupDRO':
         train_g = train_grouper.metadata_to_group(train_dataset.metadata_array)
         is_group_in_train = get_counts(train_g, train_grouper.n_groups) > 0

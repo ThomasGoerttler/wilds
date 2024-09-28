@@ -5,6 +5,23 @@ algorithm_defaults = {
         'eval_loader': 'standard',
         'randaugment_n': 2,     # When running ERM + data augmentation
     },
+    'SparseResidual': {
+        'train_loader': 'standard',
+        'uniform_over_groups': False,
+        'eval_loader': 'standard',
+        'type': 'residual',
+        'randaugment_n': 2,
+        'recon_alpha': 1
+    },
+    'SparseReconstruction': {
+        'train_loader': 'standard',
+        'uniform_over_groups': False,
+        'eval_loader': 'standard',
+        'randaugment_n': 2,
+        'type': 'sparse_recon',
+        'recon_alpha': 1,
+        'sparse_alpha': 1
+    },
     'groupDRO': {
         'train_loader': 'standard',
         'uniform_over_groups': True,

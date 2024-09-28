@@ -4,6 +4,7 @@ import os
 import traceback
 
 from models.layers import Identity
+from models.autoencoder import AutoEncoder, CombinedModel
 from utils import load
 
 def initialize_model(config, d_out, is_featurizer=False):
@@ -31,7 +32,19 @@ def initialize_model(config, d_out, is_featurizer=False):
     featurize = is_featurizer or config.load_featurizer_only
 
     if config.model in ('resnet18', 'resnet34', 'resnet50', 'resnet101', 'wideresnet50', 'densenet121'):
-        if featurize:
+
+        if config.algorithm.startswith("Sparse"):
+
+            autoencoder = AutoEncoder()
+            featurizer = initialize_torchvision_model(
+                name=config.model,
+                d_out=None,
+                **config.model_kwargs)
+            classifier = nn.Linear(featurizer.d_out, d_out)
+            model = CombinedModel(autoencoder, featurizer, classifier)
+
+
+        elif featurize:
             featurizer = initialize_torchvision_model(
                 name=config.model,
                 d_out=None,
@@ -43,6 +56,7 @@ def initialize_model(config, d_out, is_featurizer=False):
                 name=config.model,
                 d_out=d_out,
                 **config.model_kwargs)
+
 
     elif 'bert' in config.model:
         if featurize:
